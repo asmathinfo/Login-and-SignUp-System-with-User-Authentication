@@ -6,9 +6,13 @@ const app = express();
 
 app.set("view engine", "ejs");
 
+//static files
+app.use(express.static("public"));
+
 app.get("/", (req, res) => {
   res.render("login");
 });
+
 app.get("/signup", (req, res) => {
   res.render("signup");
 });
