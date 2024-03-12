@@ -1,15 +1,13 @@
 const express = require("express");
 const path = require("path");
 const bcrypt = require("bcryptjs");
-const collection =require("./config")
+const collection = require("./config");
 
 const app = express();
 
 //convert data into json
 app.use(express.json());
-app.use(express.urlencoded({extended:false}));
-
-
+app.use(express.urlencoded({ extended: false }));
 
 app.set("view engine", "ejs");
 
@@ -25,23 +23,27 @@ app.get("/signup", (req, res) => {
 });
 
 //register new users
-app.post("/signup",async(req,res)=>{
-const data ={
-  name : req.body.username,
-  password : req.body.password,
-}
+app.post("/signup", async (req, res) => {
+  const data = {
+    name: req.body.username,
+    password: req.body.password,
+  };
 
-//check if the user already exist in DB
-const exitingUser = await collection.findOne({name:data.name});
-if (exitingUser){
-  res.send("User Already Exists, Please Choose differnet Username")
-}
-else{
-  
-const userdata = await collection.insertMany(data);
-console.log(userdata)
-}
-})
+  //check if the user already exist in DB
+  const exitingUser = await collection.findOne({ name: data.name });
+  if (exitingUser) {
+    res.send("User Already Exists, Please Choose differnet Username");
+  } else {
+    //hash the pw using bcrypt
+    const saltRounds=10;
+    const hashedPassword= await bcrypt.hash(data.password,saltRounds);
+
+    data.password = hashedPassword;
+    
+    const userdata = await collection.insertMany(data);
+    console.log(userdata);
+  }
+});
 
 const port = 5000;
 app.listen(port, () => {
