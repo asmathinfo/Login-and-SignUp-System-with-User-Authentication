@@ -31,9 +31,16 @@ const data ={
   password : req.body.password,
 }
 
-
+//check if the user already exist in DB
+const exitingUser = await collection.findOne({name:data.name});
+if (exitingUser){
+  res.send("User Already Exists, Please Choose differnet Username")
+}
+else{
+  
 const userdata = await collection.insertMany(data);
 console.log(userdata)
+}
 })
 
 const port = 5000;
