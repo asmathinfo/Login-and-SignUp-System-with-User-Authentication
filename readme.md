@@ -20,4 +20,4 @@ This project implements a simple Login and SignUp system with user authenticatio
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/login-signup-system.git
+   git clone https://github.com/asmathinfo/Login-Signup-system.git
